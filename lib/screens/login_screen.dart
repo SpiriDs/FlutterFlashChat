@@ -14,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
   AnimationController controller;
 
   final _auth = FirebaseAuth.instance;
@@ -23,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
@@ -56,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen>
                 height: 48.0,
               ),
               TextField(
+                controller: emailTextController,
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -68,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen>
                 height: 8.0,
               ),
               TextField(
+                controller: passwordTextController,
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -83,6 +86,8 @@ class _LoginScreenState extends State<LoginScreen>
                 colour: Colors.lightBlueAccent,
                 buttonTitle: 'Log In',
                 onPressed: () async {
+                  emailTextController.clear();
+                  passwordTextController.clear();
                   setState(() {
                     showSpinner = true;
                   });

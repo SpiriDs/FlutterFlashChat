@@ -32,11 +32,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 200.0,
-                  child: Image.asset('images/logo.png'),
+              Flexible(
+                //! Dies fuehrt dazu, dass child sich an den vorhanden                      Platz anpassen
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
                 ),
               ),
               SizedBox(
@@ -69,34 +72,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 24.0,
               ),
-              RoundedButton(
-                colour: Colors.blueAccent,
-                buttonTitle: 'Register',
-                onPressed: () async {
-                  emailTextController
-                      .clear(); //!hiermit wird das Eingabefeld zureckgesetzt
-                  passwordTextController
-                      .clear(); //!hiermit wird das Eingabefeld zureckgesetzt
-                  setState(() {
-                    showSpinner = true;
-                  });
+              Flexible(
+                //!Hier fuehrt dass Flexible Widget dazu, dass der Button von der Tastatur verdeckt werden kann ohne dass ein Fehler auftaucht.
+                child: RoundedButton(
+                  colour: Colors.blueAccent,
+                  buttonTitle: 'Register',
+                  onPressed: () async {
+                    emailTextController
+                        .clear(); //!hiermit wird das Eingabefeld zureckgesetzt
+                    passwordTextController
+                        .clear(); //!hiermit wird das Eingabefeld zureckgesetzt
+                    setState(() {
+                      showSpinner = true;
+                    });
 
-                  try {
-                    final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: email, password: password);
-                    if (newUser != null) {
-                      Navigator.pushNamed(context, ChatScreen.id);
+                    try {
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                      if (newUser != null) {
+                        Navigator.pushNamed(context, ChatScreen.id);
+                      }
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    } catch (e) {
+                      print(e);
+                      setState(() {
+                        showSpinner = false;
+                      });
                     }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  } catch (e) {
-                    print(e);
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),

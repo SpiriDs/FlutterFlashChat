@@ -46,15 +46,20 @@ class _LoginScreenState extends State<LoginScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 200.0,
-                  child: Image.asset('images/logo.png'),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 48.0,
+              Flexible(
+                child: SizedBox(
+                  height: 48.0,
+                ),
               ),
               TextField(
                 controller: emailTextController,
@@ -82,31 +87,33 @@ class _LoginScreenState extends State<LoginScreen>
               SizedBox(
                 height: 24.0,
               ),
-              RoundedButton(
-                colour: Colors.lightBlueAccent,
-                buttonTitle: 'Log In',
-                onPressed: () async {
-                  emailTextController.clear();
-                  passwordTextController.clear();
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  try {
-                    final knownUser = await _auth.signInWithEmailAndPassword(
-                        email: email, password: password);
-                    if (knownUser != null) {
-                      Navigator.pushNamed(context, ChatScreen.id);
+              Flexible(
+                child: RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  buttonTitle: 'Log In',
+                  onPressed: () async {
+                    emailTextController.clear();
+                    passwordTextController.clear();
+                    setState(() {
+                      showSpinner = true;
+                    });
+                    try {
+                      final knownUser = await _auth.signInWithEmailAndPassword(
+                          email: email, password: password);
+                      if (knownUser != null) {
+                        Navigator.pushNamed(context, ChatScreen.id);
+                      }
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    } catch (e) {
+                      setState(() {
+                        showSpinner = false;
+                      });
+                      print(e);
                     }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  } catch (e) {
-                    setState(() {
-                      showSpinner = false;
-                    });
-                    print(e);
-                  }
-                },
+                  },
+                ),
               )
             ],
           ),

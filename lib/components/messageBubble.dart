@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.sender, this.text});
+  MessageBubble({this.sender, this.text, this.timestamp});
 
   final String sender;
   final String text;
+  final String timestamp;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,6 +31,11 @@ class MessageBubble extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          //! The time stamp under the message!!!! perfect
+          Text(
+            timestamp,
+            style: TextStyle(fontSize: 8.0, color: Colors.black54),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat/components/messageBubble.dart';
@@ -28,22 +29,29 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageText = message.data['text'];
           final messageSender = message.data['sender'];
-          final messageTimestamp = message.data[
-              'timestamp']; //!implement a timestamp in firebase important it have to be there a timestamp, not a number
-          final elapsedTime = timeago.format(messageTimestamp
-              .toDate()); //!Change format with timeago package!!! works perfect!!!
-          //final date = messageTimestamp.toDate();
-          //print(timeago.format(messageTimestamp.toDate()));
+
+          //!implement a timestamp in firebase important it have to be there a timestamp, not a number
+          final messageTimestamp = message.data['timestamp'];
+
+          //!Change format with timeago package!!! works perfect!!!
+          final elapsedTime = timeago.format(messageTimestamp.toDate());
+
+          //! here is to identify if the current user
+          final currentUser = loggedInUser.email;
 
           final messageBubble = MessageBubble(
             sender: messageSender,
             text: messageText,
-            timestamp: elapsedTime, //!elapsed time i the bubble
+            //!elapsed time in the bubble
+            timestamp: elapsedTime,
+            //! the value of the property isMe is true or false if it is written like this. So no if-statement is necessary
+            isMe: currentUser == messageSender,
           );
           messageBubbles.add(messageBubble);
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             children: messageBubbles,
           ),
